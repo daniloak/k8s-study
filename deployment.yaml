@@ -20,9 +20,18 @@ spec:
           envFrom:
             - configMapRef:
                 name: myapp-env
-          # env:
-          #   - name: NAME
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: myapp-env
-          #         key: NAME
+            - secretRef:
+                name: myapp-secret
+                
+          volumeMounts:
+            - mountPath: "/go/family"
+              name: myvolume
+              readOnly: true
+
+      volumes:
+        - name: myvolume
+          configMap:
+            name: myapp-family..
+            items:
+            - key: members
+              path: "family.txt"
