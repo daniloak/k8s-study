@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-api
@@ -17,6 +17,41 @@ spec:
       containers:
         - name: my-api
           image: my-image
+          resources:
+            requests: #MINIMO PRA RODAR
+              cpu: 100m
+              memory: 20Mi
+            limits: #MAXIMO QUE PODE CONSUMIR
+              cpu: "500m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 1 #limite de falhas
+            timeoutSeconds: 1 #Limite para esperar o health response
+            successThreshold: 1 #Qtas vezes precisa testar pra dizer que ta ok
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 1 #limite de falhas
+            timeoutSeconds: 1 #Limite para esperar o health response
+            successThreshold: 1 #Qtas vezes precisa testar pra dizer que ta ok
+            # initialDelaySeconds: 10
+
+          startupProbe: #roda antes de tudo, so inicia o readiness e liveness depois, se cair ele comeca aqui de novo
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 1 #limite de falhas
+            timeoutSeconds: 1 #Limite para esperar o health response
+            successThreshold: 1 #Qtas vezes precisa testar pra dizer que ta ok
+            # initialDelaySeconds: 10
+
           envFrom:
             - configMapRef:
                 name: myapp-env
@@ -27,8 +62,15 @@ spec:
             - mountPath: "/go/family"
               name: myvolume
               readOnly: true
+            - mountPath: "/go/pvc"
+              name: my-api-pvc
 
       volumes:
+        - name: my-api-pvc
+          apiVersion: v1
+          persistentVolumeCliam:
+            claimName: mypvc
+          
         - name: myvolume
           configMap:
             name: myapp-family..
