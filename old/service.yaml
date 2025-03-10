@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-api
+spec:
+  selector:
+    name: my-api #According to the deployment matchLabels
+  type: ClusterIp
+  ports:
+  - port: 80
+    protocol: tcp
+    targetPort: 8000
+    # nodePort: 30001 So se o type for NodePort,
+    # qualquer node nessa porta vai direcionar para targetPort

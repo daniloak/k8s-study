@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grade-submission-portal #same name of microservice/app
+  labels:
+    app.kubernetes.io/name: grade-submission #recommended to use prefix like this, name here identify the solution as a whole
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/instance: grade-submission-portal
+spec:
+  containers:
+  - name: grade-submission-portal
+    image: rslim087/kubernetes-course-grade-submission-portal
+    resources:
+      requests: #minimum amount that is guarantee
+        memory: "128Mi" #k8s will try to find a node with this resource, and it will remain as pending if it doesn't find
+        cpu: "200m"
+      limits:
+        memory: "128Mi" #should be the same, why?? I didn't understand. The propery limits and request should be get from load tests maybe
+        #cpu: "500m" you don't need to limit this so you can use all cpu you have  
+    ports:
+      - containerPort: 5001
+  - name: grade-submission-portal-health-checker
+    image: rslim087/kubernetes-course-grade-submission-portal-health-checker
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "200m"
+      limits:
+        memory: "128Mi"
+  
+#kubectl apply -f  grade-submission-portal-pod.yaml
+#kubectl describe pod grade-submission-portal
+
+#kubectl logs grade-submission-portal
+#kubectl logs -f grade-submission-portal This is to stream the logs
+#kubectl logs -f grade-submission-portal -c grade-submission-portal-health-checker This is with container
+
+#kubectl port-forward grade-submission-portal 8080:5001
+
+#kubectl delete pod -l "app.kubernetes.io/name=grade-submission" Using labels here
+#kubectl delete pod grade-submission Using pod name here
+
+#WHEN TO PUT 2 CONTAINERS IN THE SAME POD? IF IT'S A SIDECAR, LIKE A HEALTH CHECKER FOR EXAMPLE

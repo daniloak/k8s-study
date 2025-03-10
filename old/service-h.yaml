@@ -4,8 +4,8 @@ metadata:
   name: my-api
 spec:
   selector:
-    name: my-api #According to the deployment matchLabels
-  type: ClusterIp
+    name: mysql
+  ClusterIp: None #Usa o service name, usa para service headless, identifica pelo serviceName no statefulset
   ports:
   - port: 80
     protocol: tcp

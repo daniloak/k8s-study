@@ -1,0 +1,5 @@
+kubectl create namespace grade-submission
+
+kubectl apply -f . -n grade-submission #apply everything in the specified namespace
+kubectl get pods,services -n grade-submission
+kubectl delete pods,services --all -n grade-submission
