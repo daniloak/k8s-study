@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grade-submission-porta-ingress
+  namespace: grade-submission
+spec:
+  ingressClassName: nginx
+  rules:
+  #- host: <Host>
+  - http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: grade-submission-portal
+            port: 
+              number: 5001
