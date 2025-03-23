@@ -1,1 +1,27 @@
 kubectl top pods -n grade-submission #check with metrics
+
+kubectl get configmap  grade-submission-api-config -n grade-submission -o yaml
+
+
+helm template .
+helm package .
+helm install [name] [package]
+helm uninstall [name]
+
+helm list -a
+helm list -A
+helm rollback grade-submission-api 2 -n grade-submission
+
+ helm repo update          
+ helm repo add bitnami https://charts.bitnami.com/bitnami
+ helm search repo bitnami/mongodb --versions
+ helm show values bitnami/mongodb > default_values.yaml
+ helm repo remove bitnami  
+
+ helm install mongodb bitnami/mongodb --version 15.6.13 -f values.yaml -n mongodb --create-namespace
+
+ helm upgrade grade-submission-api . -n grade-submission
+
+ kubectl get mongodbcommunity -n mongodb     
+
+ helm install community-operator mongodb/community-operator --version 0.10.0 -n mongodb
