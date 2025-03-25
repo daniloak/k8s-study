@@ -25,3 +25,15 @@ helm rollback grade-submission-api 2 -n grade-submission
  kubectl get mongodbcommunity -n mongodb     
 
  helm install community-operator mongodb/community-operator --version 0.10.0 -n mongodb
+
+
+ ❯ aws configure get default.region
+  aws configure
+  aws configure list
+
+eksctl help to work with eks
+  brew tap weaveworks/tap
+  brew install weaveworks/tap/eksctl
+
+  eksctl create cluster --name my-cluster --region us-east-1 --node-type t3.medium --nodes 2
+  eksctl delete cluster --name my-cluster
